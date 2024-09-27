@@ -4,7 +4,7 @@ How to play blackjack:    https://bicyclecards.com/how-to-play/blackjack/
 "Standard" playing cards: https://en.wikipedia.org/wiki/Standard_52-card_deck
 """
 
-face_cards = {"J", "Q", "K"}
+face_cards = {"J", "Q", "K", "10"}
 
 
 def value_of_card(card):
@@ -86,6 +86,17 @@ def value_of_ace(card_one, card_two):
     return ace_value
 
 
+def ten_card(card_one, card_two):
+    """Determine if a card has a value of 10
+    :param card_one, card_two: str
+    :return: bool
+    """
+    card_one_and_two = [card_one, card_two]
+    if any(item in face_cards for item in card_one_and_two):
+        return True
+    return False
+
+
 def is_blackjack(card_one, card_two):
     """Determine if the hand is a 'natural' or 'blackjack'.
 
@@ -97,7 +108,12 @@ def is_blackjack(card_one, card_two):
     3.  '2' - '10' = numerical value.
     """
 
-    pass
+    is_ten_card = ten_card(card_one, card_two)
+    is_ace_card = is_ace(card_one) or is_ace(card_two)
+
+    if is_ten_card and is_ace_card:
+        return True
+    return False
 
 
 def can_split_pairs(card_one, card_two):
@@ -107,7 +123,11 @@ def can_split_pairs(card_one, card_two):
     :return: bool - can the hand be split into two pairs? (i.e. cards are of the same value).
     """
 
-    pass
+    same_value = value_of_card(card_one) == value_of_card(card_two)
+
+    if same_value:
+        return True
+    return False
 
 
 def can_double_down(card_one, card_two):
@@ -117,4 +137,8 @@ def can_double_down(card_one, card_two):
     :return: bool - can the hand can be doubled down? (i.e. totals 9, 10 or 11 points).
     """
 
-    pass
+    sum_of_cards = value_of_card(card_one) + value_of_card(card_two)
+
+    if 9 <= sum_of_cards <= 11:
+        return True
+    return False
